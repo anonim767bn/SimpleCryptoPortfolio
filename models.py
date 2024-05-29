@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, UniqueConstraint, CheckConstraint, String, Float, Text, DateTime
+from sqlalchemy import ForeignKey, UniqueConstraint, CheckConstraint, Text, DateTime
 from uuid import UUID, uuid4
 from datetime import datetime
 
@@ -15,13 +15,13 @@ class UUIDmixin:
 class Portfolio(Base, UUIDmixin):
     __tablename__ = 'portfolio'
 
-    name: Mapped[str] = mapped_column(Text, nullable=False, unique=True, index=True)
+    name: Mapped[str] = mapped_column(
+        Text, nullable=False, unique=True, index=True)
     assets: Mapped['Asset'] = relationship('Asset', back_populates='portfolio')
 
     __table_args__ = (
         CheckConstraint('LENGTH(name) < 50'),
     )
-
 
 
 class Asset(Base, UUIDmixin):
@@ -67,7 +67,8 @@ class PriceHistory(Base, UUIDmixin):
         UUID, ForeignKey('crypto_currency.id'), index=True)
     crypto_currency: Mapped['CryptoCurrency'] = relationship(
         'CryptoCurrency', back_populates='price_histories')
-    timestamp: Mapped[datetime] = mapped_column(DateTime, index=True, nullable=False)
+    timestamp: Mapped[datetime] = mapped_column(
+        DateTime, index=True, nullable=False)
     price: Mapped[float]
 
     __table_args__ = (
