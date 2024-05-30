@@ -6,26 +6,24 @@ from dateutil.parser import parse
 from api import get_data
 
 
-
 def create_db(engine):
-    Base.metadata.create_all(bind = engine)
+    Base.metadata.create_all(bind=engine)
+
 
 def update_db(session_factory, data):
     with session_factory() as session:
         with session.begin():
             for row in data:
                 print(row)
-                currency = session.query(Currency).filter_by(name=row['name']).first()
+                currency = session.query(Currency).filter_by(
+                    name=row['name']).first()
                 if not currency:
                     currency = Currency(name=row['name'], symbol=row['symbol'])
                     session.add(currency)
                     session.flush()
-                history = PriceHistory(currency_id = currency.id, price=row['price'], timestamp=parse(row['timestamp']))
+                history = PriceHistory(
+                    currency_id=currency.id, price=row['price'], timestamp=parse(row['timestamp']))
                 session.add(history)
-
-
-
-            
 
 
 if __name__ == '__main__':
@@ -37,8 +35,3 @@ if __name__ == '__main__':
     print('Data fetched')
     update_db(SessionFactory, data)
     print('Data updated')
-
-
-
-
-    

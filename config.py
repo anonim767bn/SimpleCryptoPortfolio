@@ -3,17 +3,18 @@ import os
 
 load_dotenv()
 
-API_URL='https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+API_URL = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
 PARAMETERS = {
-  'start':'1',
-  'limit':'50',
-  'convert':'USD'
+    'start': '1',
+    'limit': '50',
+    'convert': 'USD'
 }
 
 HEADERS = {
-  'Accepts': 'application/json',
-  'X-CMC_PRO_API_KEY': os.getenv('X-CMC_PRO_API_KEY'),
+    'Accepts': 'application/json',
+    'X-CMC_PRO_API_KEY': os.getenv('X-CMC_PRO_API_KEY'),
 }
+
 
 def get_db_url() -> str:
     load_dotenv()
