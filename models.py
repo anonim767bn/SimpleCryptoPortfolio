@@ -1,6 +1,7 @@
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, UniqueConstraint, CheckConstraint, Text, DateTime
-from uuid import UUID, uuid4
+from uuid import uuid4
+from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
 
 
@@ -68,7 +69,7 @@ class PriceHistory(Base, UUIDmixin):
     crypto_currency: Mapped['CryptoCurrency'] = relationship(
         'CryptoCurrency', back_populates='price_histories')
     timestamp: Mapped[datetime] = mapped_column(
-        DateTime, index=True, nullable=False)
+        DateTime(timezone=True), index=True, nullable=False)
     price: Mapped[float]
 
     __table_args__ = (

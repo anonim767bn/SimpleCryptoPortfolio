@@ -6,7 +6,7 @@ load_dotenv()
 API_URL='https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
 PARAMETERS = {
   'start':'1',
-  'limit':'5000',
+  'limit':'50',
   'convert':'USD'
 }
 

@@ -3,7 +3,7 @@ from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 
-def get_api_data(url: str, parameters: dict, headers: dict) -> dict:
+def get_row_api_data(url: str, parameters: dict, headers: dict) -> dict:
     session = Session()
     session.headers.update(headers)
     try:
@@ -11,6 +11,21 @@ def get_api_data(url: str, parameters: dict, headers: dict) -> dict:
         data = json.loads(response.text)
         return data
     except (ConnectionError, Timeout, TooManyRedirects) as e:
-        return None
+        return {}
 
-print(json.dumps(get_api_data(API_URL, PARAMETERS, HEADERS)['data'][0]['quote']['USD']['price'], indent=4))
+def get_data() -> dict:
+    data = get_row_api_data(API_URL, PARAMETERS, HEADERS)
+    result = []
+    for i in range(len(data['data'])):
+        result.append({
+            'name' : data['data'][i]['name'],
+            'symbol' : data['data'][i]['symbol'],
+            'price' : data['data'][i]['quote']['USD']['price'],
+            'timestamp' : data['status']['timestamp']
+        })
+    return result
+
+
+
+# print(get_row_api_data(API_URL, PARAMETERS, HEADERS)['status'])
+print(json.dumps(get_data(), indent=2))
