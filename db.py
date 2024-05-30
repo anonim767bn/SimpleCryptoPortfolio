@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, insert
 from sqlalchemy.orm import sessionmaker
 from models import Base
-from models import Portfolio, Asset, CryptoCurrency, PriceHistory
+from models import Portfolio, Asset, Currency, PriceHistory
 from dateutil.parser import parse
 from api import get_data
 
@@ -15,12 +15,12 @@ def update_db(session_factory, data):
         with session.begin():
             for row in data:
                 print(row)
-                currency = session.query(CryptoCurrency).filter_by(name=row['name']).first()
+                currency = session.query(Currency).filter_by(name=row['name']).first()
                 if not currency:
-                    currency = CryptoCurrency(name=row['name'], symbol=row['symbol'])
+                    currency = Currency(name=row['name'], symbol=row['symbol'])
                     session.add(currency)
                     session.flush()
-                history = PriceHistory(crypto_currency_id = currency.id, price=row['price'], timestamp=parse(row['timestamp']))
+                history = PriceHistory(currency_id = currency.id, price=row['price'], timestamp=parse(row['timestamp']))
                 session.add(history)
 
 
