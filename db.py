@@ -14,7 +14,6 @@ def update_db(session_factory, data):
     with session_factory() as session:
         with session.begin():
             for row in data:
-                print(row)
                 currency = session.query(Currency).filter_by(
                     name=row['name']).first()
                 if not currency:
