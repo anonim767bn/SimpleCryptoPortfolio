@@ -32,7 +32,7 @@ class UserCreate(User):
                 'Password must contain at least one lowercase letter')
         elif not any(char in SPECIAL_SYMBOLS for char in v):
             raise ValueError(
-                'Password must contain at least one special character')
+                f'Password must contain at least one special character{v} \n {v[6]}\n{v[6] in SPECIAL_SYMBOLS}')
         return v
 
 

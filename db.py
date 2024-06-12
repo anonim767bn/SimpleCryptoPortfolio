@@ -1,9 +1,10 @@
 from sqlalchemy import create_engine, insert
 from sqlalchemy.orm import sessionmaker
 from models import Base
-from models import Portfolio, Asset, Currency, PriceHistory
+from models import Portfolio, Asset, Currency, PriceHistory, User
 from dateutil.parser import parse
 from api import get_data
+from config import get_db_url
 
 
 def create_db(engine):
@@ -23,6 +24,23 @@ def update_db(session_factory, data):
                 history = PriceHistory(
                     currency_id=currency.id, price=row['price'], timestamp=parse(row['timestamp']))
                 session.add(history)
+    
+def get_user_from_db(session_factory, username) -> User|None:
+    with session_factory() as session:
+        return session.query(User).filter_by(username=username).first()
+
+def get_session_factory():
+    engine = create_engine(get_db_url())
+    Base.metadata.create_all(bind=engine)
+    return sessionmaker(engine)
+
+def create_user(session_factory, username, password):
+    with session_factory() as session:
+        with session.begin():
+            user = User(username=username, hash_password=password)
+            session.add(user)
+            session.flush()
+            return user
 
 
 if __name__ == '__main__':

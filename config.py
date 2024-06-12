@@ -17,13 +17,15 @@ HEADERS = {
 
 
 def get_db_url() -> str:
-    load_dotenv()
-    PG_VARS = 'PG_HOST', 'PG_PORT', 'PG_USER', 'PG_PASSWORD', 'PG_DBNAME'
-    credentials = {var: os.environ.get(var) for var in PG_VARS}
-    return 'postgresql+psycopg://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DBNAME}'.format(**credentials)
+    # TODO: Implement this function
+    # load_dotenv()
+    # PG_VARS = 'PG_HOST', 'PG_PORT', 'PG_USER', 'PG_PASSWORD', 'PG_DBNAME'
+    # credentials = {var: os.environ.get(var) for var in PG_VARS}
+    # return 'postgresql+psycopg://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DBNAME}'.format(**credentials)
+    return 'sqlite:///db.sqlite'
 
 
-SPECIAL_SYMBOLS = '!@#$%^&*()_+'
+SPECIAL_SYMBOLS = set(['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/'])
 
 TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 ALGORITHM = 'HS256'
