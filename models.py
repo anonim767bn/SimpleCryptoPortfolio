@@ -13,6 +13,18 @@ class UUIDmixin:
     id: Mapped[UUID] = mapped_column(UUID, primary_key=True, default=uuid4)
 
 
+class User(Base, UUIDmixin):
+    __tablename__ = 'user'
+
+    username: Mapped[str] = mapped_column(
+        Text, nullable=False, unique=True, index=True)
+    hash_password: Mapped[str] = mapped_column(Text, nullable=False)
+
+    __table__args__ = (
+        CheckConstraint('LENGTH(username) < 50'),
+    )
+
+
 class Portfolio(Base, UUIDmixin):
     __tablename__ = 'portfolio'
 

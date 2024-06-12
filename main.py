@@ -8,3 +8,5 @@ app = FastAPI()
 @app.get('/')
 def read_item():
     return '<Hello world>'
+
+@app.post()
